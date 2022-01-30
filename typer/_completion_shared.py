@@ -107,9 +107,7 @@ def install_bash(*, prog_name: str, complete_var: str, shell: str) -> Path:
     completion_path = Path.home() / f".bash_completions/{prog_name}.sh"
     rc_path = Path.home() / ".bashrc"
     rc_path.parent.mkdir(parents=True, exist_ok=True)
-    rc_content = ""
-    if rc_path.is_file():
-        rc_content = rc_path.read_text()
+    rc_content = rc_path.read_text() if rc_path.is_file() else ""
     completion_init_lines = [f"source {completion_path}"]
     for line in completion_init_lines:
         if line not in rc_content:  # pragma: nocover
@@ -129,9 +127,7 @@ def install_zsh(*, prog_name: str, complete_var: str, shell: str) -> Path:
     # Setup Zsh and load ~/.zfunc
     zshrc_path = Path.home() / ".zshrc"
     zshrc_path.parent.mkdir(parents=True, exist_ok=True)
-    zshrc_content = ""
-    if zshrc_path.is_file():
-        zshrc_content = zshrc_path.read_text()
+    zshrc_content = zshrc_path.read_text() if zshrc_path.is_file() else ""
     completion_init_lines = [
         "autoload -Uz compinit",
         "compinit",

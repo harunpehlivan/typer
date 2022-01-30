@@ -34,10 +34,7 @@ def get_completion_inspect_parameters() -> Tuple[ParamMeta, ParamMeta]:
 def install_callback(ctx: click.Context, param: click.Parameter, value: Any) -> Any:
     if not value or ctx.resilient_parsing:
         return value  # pragma no cover
-    if isinstance(value, str):
-        shell, path = install(shell=value)
-    else:
-        shell, path = install()
+    shell, path = install(shell=value) if isinstance(value, str) else install()
     click.secho(f"{shell} completion installed in {path}", fg="green")
     click.echo("Completion will take effect once you restart the terminal")
     sys.exit(0)
@@ -105,11 +102,11 @@ def completion_init() -> None:
     if _get_click_major() < 8:
         from ._completion_click7 import completion_init
 
-        completion_init()
     else:
         from ._completion_click8 import completion_init
 
-        completion_init()
+
+    completion_init()
 
 
 # Re-implement Click's shell_complete to add error message with:
